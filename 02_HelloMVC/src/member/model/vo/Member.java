@@ -3,13 +3,19 @@ package member.model.vo;
 import java.io.Serializable;
 import java.sql.Date;
 
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
+
 /**
  * 
  * member테이블의 한행에 상응하는 vo클래스
  * (dto, entity, bean)
+ * 
+ * HttpSessionBindingListener인터페이스 구현
+ * 현재객체가 session에 속성으로 등록 혹은 해체되는 이벤트 감지처리
  *
  */
-public class Member implements Serializable {
+public class Member implements Serializable, HttpSessionBindingListener {
 
 	private String memberId;	//필수
 	private String password;	//필수
@@ -116,6 +122,21 @@ public class Member implements Serializable {
 		return "Member [memberId=" + memberId + ", password=" + password + ", memberName=" + memberName
 				+ ", memberRole=" + memberRole + ", gender=" + gender + ", birthDay=" + birthDay + ", email=" + email
 				+ ", phone=" + phone + ", address=" + address + ", hobby=" + hobby + ", enrollDate=" + enrollDate + "]";
+	}
+
+	/*
+	 * 세션에 memeberLoggedIn 등록되는 경우
+	 * */
+	@Override
+	public void valueBound(HttpSessionBindingEvent event) {
+//		System.out.println("[" + memberId + "]님이 로그인 하였습니다");
+		
+	}
+
+	@Override
+	public void valueUnbound(HttpSessionBindingEvent event) {
+//		System.out.println("[" + memberId + "]님이 로그아웃 하였습니다");
+		
 	}
 	
 	

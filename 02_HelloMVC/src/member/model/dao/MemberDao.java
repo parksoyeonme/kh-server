@@ -23,7 +23,7 @@ import static common.JDBCTemplate.close;
  */
 public class MemberDao {
 
-	private Properties prop = new Properties();
+	private Properties prop = new Properties(); //prop 이라는 properties형식의 변수생성
 	
 	/**
 	 * 객체 생성시 member-query.properties의 내용을 읽어다 prop필드에 저장
@@ -31,13 +31,14 @@ public class MemberDao {
 	public MemberDao() {
 		String fileName = "/sql/member/member-query.properties";
 		String path = MemberDao.class.getResource(fileName).getPath();
+		//우리가 웹상에서사용하는 파일경로를 묶어서 사용가능 .getrource를 경로를 
 		try {
 			prop.load(new FileReader(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("path@MemberDao = " + path);
-		System.out.println("prop@MemberDao = " + prop);
+		//System.out.println("path@MemberDao = " + path);
+		//System.out.println("prop@MemberDao = " + prop);
 	}
 	
 	public Member selectOne(Connection conn, String memberId) {

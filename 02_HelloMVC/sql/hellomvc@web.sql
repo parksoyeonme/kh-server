@@ -42,3 +42,5 @@ create table member (
 		'admin@naver.com', '01056785678', '서울시 관악구', '게임,독서', default);
 	select * from member;
 	commit;
+    
+    desc member;

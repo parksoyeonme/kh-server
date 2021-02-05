@@ -6,9 +6,23 @@
 	//System.out.println("msg@header.jsp = " + msg);
 	String loc = (String)request.getAttribute("loc");
 	//System.out.println("loc@header.jsp = " + loc);
-	//Member memberLoggedIn = (Member)request.getAttribute("memberLoggedIn");
 	Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
-	System.out.println("memberLoggedIn@header.jsp = " + memberLoggedIn);
+	//System.out.println("memberLoggedIn@header.jsp = " + memberLoggedIn);
+	
+	//서버로 전송된 쿠키값 확인
+	String saveId = null;
+	Cookie [] cookies = request.getCookies();
+	if(cookies != null){
+		for(Cookie c : cookies){
+			//System.out.println(c.getName() + " : " + c.getValue()); // mvc/에서 cookie값을빼온거임
+			if("saveId".equals(c.getName())){
+				saveId = c.getValue();
+				break;
+				
+			}
+		}
+		//System.out.println("saveId@servlet.jsp = " + saveId);
+	}
 	
 %>
 <!DOCTYPE html>
@@ -25,6 +39,8 @@
 
 
 $(function(){
+	
+<% if(memberLoggedIn == null) { %>
 	/*
 	* 로그인폼 유효성 검사
 	*
@@ -37,7 +53,7 @@ $(function(){
 		var $memberId = $(memberId);
 		if(/^.{4,}$/.test($memberId.val()) == false){
 			alert("유효한 아이디를 입력하세요.");
-			$memberId.select(); //다시입력을 유도
+			$memberId.select();
 			return false;//폼 전송 방지
 		}
 		//비번검사
@@ -49,6 +65,7 @@ $(function(){
 		}
 	});
 	
+<% } %>	
 	
 	
 });
@@ -67,7 +84,15 @@ $(function(){
 					method="POST">
 					<table>
 						<tr>
-							<td><input type="text" name="memberId" id="memberId" placeholder="아이디" tabindex="1"></td>
+							<td>
+								<input 
+									type="text" 
+									name="memberId" 
+									id="memberId" 
+									placeholder="아이디" 
+									tabindex="1"
+									value="<%= saveId != null ? saveId : ""%>">
+							</td>
 							<td><input type="submit" value="로그인" tabindex="3"></td>
 						</tr>
 						<tr>
@@ -76,27 +101,33 @@ $(function(){
 						</tr>
 						<tr>
 							<td colspan="2">
-								<input type="checkbox" name="saveId" id="saveId" />
+								<input type="checkbox" name="saveId" id="saveId" <%= saveId != null ? "checked" : "" %>/>
 								<label for="saveId">아이디저장</label>&nbsp;&nbsp;
-								<input type="button" value="회원가입">
+								<input 
+									type="button" 
+									value="회원가입"
+									onclick="location.href='<%= request.getContextPath() %>/member/memberEnroll';">
 							</td>
 						</tr>
 					</table>
 				</form>
 			
 			<% } else { %>
-			<%-- 로그인 성공시 --%>
-			<table id="logged-in">
-				<tr>
-					<td><%= memberLoggedIn.getMemberName() %>님, 안녕하세요.</td>
-				</tr>			
-				<tr>
-					<td>
-						<input type="button" value="내 정보보기" />
-						<input type="button" value="로그아웃" />
-					</td>
-				</tr>
-			</table>
+				<%-- 로그인 성공시 --%>
+				<table id="logged-in">
+					<tr>
+						<td><%= memberLoggedIn.getMemberName() %>님, 안녕하세요.</td>
+					</tr>			
+					<tr>
+						<td>
+							<input type="button" value="내 정보보기" />
+							<input 
+								type="button" 
+								value="로그아웃" 
+								onclick="location.href='<%= request.getContextPath() %>/member/logout'; "/>
+						</td>
+					</tr>
+				</table>
 			<% } %>
 			</div>
 			<!-- 로그인메뉴 끝-->
