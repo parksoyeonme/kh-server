@@ -7,11 +7,37 @@
 $(function(){
 	var frm = document.querySelector("[name=memberEnrollFrm]");
 	frm.onsubmit = function(){
-	if(memberId_.value.length < 4){
-		 alert("아이디는 4글자 이상");
-         memberId_.select();
-         return false;
-	}
+		if(memberId.value.length < 4){
+	 		alert("아이디는 4글자 이상이어야 합니다.");
+	        memberId.select();
+	        return false;//조기리턴 -> 폼제출방지
+	        }
+	
+	        //2.이름 검사 
+	        if(/^[가-힣]{2,}$/.test(memberName.value) == false){
+	        //memberName.value이 정규식에 /^[가-힣]{2,}$/가 맞는가 test하겠다
+	        alert("이름은 한글 2글자 이상이어야합니다.");
+	        memberName.select();//다시리턴할때 여기로 ,멤버네임에 마우스올려준다 라고 해야하나
+	         //select memberName 블럭잡아줌 드래그처리
+	        return false;
+	        }
+	
+	        //3.비밀번호 검사 : 4글자이상 && (pwd.value == pwdCheck.value)
+	        if(pwd.value.length < 4){
+	        alert("비밀번호는 4글자 이상이어야 합니다.");
+	        pwd.select();
+	        return false;
+	        }
+	
+	        if(pwd.value != pwdCheck.value){
+	        alert("비밀번호가 일치하지 않습니다.");
+	        pwd.value = '';
+	        pwdCheck.value = '';
+	        pwd.focus();
+	        return false;
+	        }
+	
+	        return true;
 	
 	}
 });
@@ -19,7 +45,7 @@ $(function(){
 
 </script>
 	<h2>회원 가입 정보 입력</h2>
-	<form name="memberEnrollFrm" action="%=request.getContextPath() %>/member/memberEnroll" method="post">
+	<form name="memberEnrollFrm" action="<%=request.getContextPath() %>/member/memberEnroll" method="post">
 		<table>
 			<tr>
 				<th>아이디<sup>*</sup></th>

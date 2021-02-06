@@ -81,4 +81,37 @@ public class MemberDao {
 		return member;
 	}
 
+	public int updateEnroll(Connection conn, Member member) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("updateEnroll");
+		int result = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, member.getMemberId());
+			pstmt.setString(2, member.getPassword());
+			pstmt.setString(3, member.getMemberName());
+			pstmt.setNString(4, member.getMemberRole());
+			pstmt.setString(5, member.getGender());
+			pstmt.setDate(6, member.getBirthDay());
+			pstmt.setString(7, member.getEmail());
+			pstmt.setString(8, member.getPhone());
+			pstmt.setString(9, member.getAddress());
+			pstmt.setString(10, member.getHobby());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}finally {
+			//3.자원반납(ResultSet, PreparedStatement)
+			close(rset);
+			close(pstmt);
+	}
+		
+		return result;
+	}
+
 }

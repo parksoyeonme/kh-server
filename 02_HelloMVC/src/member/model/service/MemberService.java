@@ -26,4 +26,16 @@ public class MemberService {
 		close(conn);
 		return member;
 	}
+
+	public int updateEnroll(Member member) {
+		//1.Connection 객체생성
+		Connection conn = getConnection();
+		//2.dao 요청
+		int result = memberDao.updateEnroll(conn, member);
+		//3.트랜잭션관리(DML관리)
+		//4.자원반납
+		close(conn);
+		return result;
+	}
+
 }

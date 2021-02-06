@@ -1,6 +1,8 @@
 package member.controller;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.util.Arrays;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +10,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import member.model.service.MemberService;
+import member.model.vo.Member;
 
 /**
  * Servlet implementation class MemberEnrollServlet
@@ -35,20 +40,31 @@ public class MemberEnrollServlet extends HttpServlet {
 		
 		//1. 인코딩처리
 		request.setCharacterEncoding("utf-8");
+		
 		//2. 사용자입력값 처리
 		String memberId = request.getParameter("memberId");
 		String password = request.getParameter("password");
 		String memberName = request.getParameter("memberName");
-		String birthDay = request.getParameter("birthDay");
+		String memberRole = "U";
+		String gender = request.getParameter("gender");
+		
+		Date birthDay = null;
+		String date = request.getParameter("birthDay");
+		if(!(date.equals(""))) {
+			birthDay = Date.valueOf(date);
+		}
+		
 		String email = request.getParameter("email");
 		String phone = request.getParameter("phone");
 		String address = request.getParameter("address");
-		String gender = request.getParameter("gender");
+		
 		String[] hobbyArr = request.getParameterValues("hobby");
+		String hobby = Arrays.toString(hobbyArr);
 		
-		//hobby for문
-		String hobby = "";
+		Date enrollDate = new java.sql.Date(new java.util.Date().getTime());
 		
+		Member member = new Member(memberId, password, memberName, memberRole, gender, birthDay,
+				email, phone, address, hobby, enrollDate);
 		
 		/*
 		 * MEMBER_ID   NOT NULL VARCHAR2(15)  
@@ -64,6 +80,15 @@ public class MemberEnrollServlet extends HttpServlet {
 			ENROLL_DATE          DATE 
 		 * 
 		 * */
+		int result = new MemberService().updateEnroll(member);
+		
+		if(result != 0) {
+			request.setAttribute("msg", "회원가입에 성공했습니다.");
+			
+		}else {
+			request.setAttribute("msg", "회원가입 실패했습니다.");	
+		}
+		request.setAttribute("loc", request.getContextPath());
 		
 		//4. view단 처리 (jsp) : 위로옮긴 이유는 이제는 세션으로 로그인성공을 처리하기 때문에
 		//실패한 경우에 비밀번호가 틀렸습니다의 문구만 리퀘스트 하면되기때문
