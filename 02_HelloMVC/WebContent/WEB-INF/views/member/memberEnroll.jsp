@@ -2,8 +2,24 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <section id=enroll-container>
+<script>
+//유효성검사해주기
+$(function(){
+	var frm = document.querySelector("[name=memberEnrollFrm]");
+	frm.onsubmit = function(){
+	if(memberId_.value.length < 4){
+		 alert("아이디는 4글자 이상");
+         memberId_.select();
+         return false;
+	}
+	
+	}
+});
+
+
+</script>
 	<h2>회원 가입 정보 입력</h2>
-	<form name="memberEnrollFrm" action="" method="post">
+	<form name="memberEnrollFrm" action="%=request.getContextPath() %>/member/memberEnroll" method="post">
 		<table>
 			<tr>
 				<th>아이디<sup>*</sup></th>

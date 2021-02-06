@@ -68,12 +68,12 @@ public class MemberLoginServlet extends HttpServlet {
 //			System.out.println(new Date(session.getLastAccessedTime())); //새성시간 마지막 접속시간
 			
 			//초단위 설정.web.xml의 session-time보다 우선순위가 높다
-//			session.setMaxInactiveInterval(30); //30초 : 로그인후에 ()초동안 아무것도안하면 세션종료
+//			session.setMaxInactiveInterval(60 * 10); //10분 : 로그인후에 ()초동안 아무것도안하면 세션종료
 			
 			//saveId쿠키설정
 			
 			
-			Cookie c = new Cookie("saveId", memberId);
+			Cookie c = new Cookie("saveId", memberId); 
 			c.setPath(request.getContextPath()); //쿠키전송 디렉토리(client -> server) /mvc로 요청했으면 쿠키를 보내라
 			///mvc /mvc/member /mve/member/login
 			

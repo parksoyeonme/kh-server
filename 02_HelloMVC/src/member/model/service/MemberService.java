@@ -2,7 +2,6 @@ package member.model.service;
 
 import java.sql.Connection;
 
-import common.JDBCTemplate;
 import member.model.dao.MemberDao;
 import member.model.vo.Member;
 import static common.JDBCTemplate.*;
