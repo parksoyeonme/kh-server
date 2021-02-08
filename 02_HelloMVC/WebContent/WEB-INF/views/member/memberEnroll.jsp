@@ -12,6 +12,14 @@ $(function(){
 	        memberId.select();
 	        return false;//조기리턴 -> 폼제출방지
 	        }
+		
+		//아이디 중복검사
+    	var $idValid = $("#idValid");
+    	if($idValid.val() != 1){
+    		alert("아이디 중복 검사해주세요.");
+    		$idValid.focus();
+    		return false;
+    	}
 	
 	        //2.이름 검사 
 	        if(/^[가-힣]{2,}$/.test(memberName.value) == false){
@@ -41,9 +49,46 @@ $(function(){
 	
 	}
 });
+/**
+* 중복 검사 이후 아이디를 변경한 경우, 다시 중복검사를 해야한다.
+*/
+$("#memberId_").change(function(){
+	$("#idValid").val(0);
+});
 
+
+/*
+ *  아이디 중복검사
+ */
+ function checkIdDuplicate(){
+	//1. 아이디 유효성 검사
+	var $memberId = $(memberId_);
+	if(/^[a-zA-Z0-9_]{4,}$/.test($memberId.val()) == false){
+		alert("유효한 아이디를 입력해주세요.");
+		$memberId.select();
+		return;
+	}
+	var title = "checkIdDuplicatePopup";
+	var spec = "left=500px, top=300px, width=300px, height=200px";
+	open("", title, spec); //open(url, title, spec);이게있어야팝업가능
+	
+	
+	//var $frm = $("[name=checkIdDuplicateFrm]");
+	var $frm = $(document.checkIdDuplicateFrm);// name값은 document에서 바로 접근가능
+	//아이디값 세팅
+	$frm.find("[name=memberId]")
+		.val($memberId.val()); //위에 사용한 memberId사용
+	$frm.attr("action", "<%= request.getContextPath() %>/member/checkIdDuplicate")
+		.attr("method", "POST")
+		.attr("target", title) //폼과 팝업 연결 설정
+		.submit();
+	}
 
 </script>
+<!-- 아이디 중복검사용 폼 : 노출되지않는다 hidden이기때문에 -->
+<form name="checkIdDuplicateFrm">
+	<input type="hidden" name="memberId" />
+</form>
 	<h2>회원 가입 정보 입력</h2>
 	<form name="memberEnrollFrm" action="<%=request.getContextPath() %>/member/memberEnroll" method="post">
 		<table>
@@ -51,6 +96,9 @@ $(function(){
 				<th>아이디<sup>*</sup></th>
 				<td>
 					<input type="text" placeholder="4글자이상" name="memberId" id="memberId_" required>
+					<input type="button" value="중복검사" onclick="checkIdDuplicate();"/>
+					<input type="hidden" id="idValid" value="0" />
+					<!-- 중복검사 통과인경우 1 / 통과하지 못한경우 0 -->
 				</td>
 			</tr>
 			<tr>

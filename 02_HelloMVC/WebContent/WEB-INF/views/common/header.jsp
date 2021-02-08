@@ -120,7 +120,10 @@ $(function(){
 					</tr>			
 					<tr>
 						<td>
-							<input type="button" value="내 정보보기" />
+							<input 
+								type="button" 
+								value="내 정보보기" 
+								onclick="location.href='<%= request.getContextPath() %>/member/memberView?memberId=<%= memberLoggedIn.getMemberId() %>';"/>
 							<input 
 								type="button" 
 								value="로그아웃" 

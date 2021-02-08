@@ -55,11 +55,23 @@ public class MemberEnrollServlet extends HttpServlet {
 		}
 		
 		String email = request.getParameter("email");
+		if(email.equals("")) {
+	         email = null;
+	      }
 		String phone = request.getParameter("phone");
 		String address = request.getParameter("address");
+		if(address.equals("")) {
+	         address = null;
+	      }
 		
-		String[] hobbyArr = request.getParameterValues("hobby");
-		String hobby = Arrays.toString(hobbyArr);
+		//체크박스같은 경우 선택된 복수의 값이 배열로 전달된다.
+				//String[] javax.servlet.ServletRequest.getParameterValues(String arg0)
+				String[] hobbies = request.getParameterValues("hobby");
+				
+				String hobby = "";
+				//String java.lang.String.join(CharSequence delimiter, CharSequence... elements)
+				//파라미터로 전달한 문자열배열이 null이면, NullPointerException유발.
+				if(hobbies != null) hobby = String.join(",", hobbies);
 		
 		Date enrollDate = new java.sql.Date(new java.util.Date().getTime());
 		
