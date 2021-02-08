@@ -16,6 +16,74 @@
 	}
 	System.out.println(hobbyList);
 %>
+<script>
+$(function(){   
+	/**
+	* 비밀번호 일치여부 검사
+	*/
+    $("#password2").blur(function(){
+        var $p1 = $("#password_");
+        var $p2 = $("#password2");
+        
+        if($p1.val() != $p2.val()){
+            alert("패스워드가 일치하지 않습니다.");
+            $p1.select();
+        }
+    });
+    
+	/**
+	* 폼유효성 검사
+	*/
+    $("#memberUpdateFrm").submit(function(e){
+    	   	
+        //password
+        var $p1 = $("#password_");
+        var $p2 = $("#password2");
+        if(/^[a-zA-Z0-9!@#$$%^&*()]{4,}/.test($p1.val()) == false){
+        	alert("유효한 패스워드를 입력하세요.");
+        	$p1.select();
+            return false;
+        }
+        
+        if($p1.val() != $p2.val()){
+            alert("패스워드가 일치하지 않습니다.");
+            $p1.select();
+            return false;
+        }
+        
+        //memberName
+        var $memberName = $("#memberName");
+        if(/^[가-힣]{2,}$/.test($memberName.val()) == false){
+        	alert("이름은 한글 2글자 이상이어야 합니다.");
+        	$memberName.select();
+        	return false;
+        }
+        
+        //phone
+        var $phone = $("#phone");
+        //-제거하기
+        $phone.val($phone.val().replace(/[^0-9]/g, ""));//숫자아닌 문자(복수개)제거하기
+        
+        if(/^010[0-9]{8}$/.test($phone.val()) == false){
+        	alert("유효한 전화번호가 아닙니다.");
+        	$phone.select();
+        	return false;
+        }
+        
+        return true;
+    });
+	    
+});
+
+function deleteMember(){
+	$("#memberUpdateFrm")
+		.attr("action", " <%= request.getContextPath() %>/member/memberDelete ")
+		.attr("method","POST")
+		.submit();
+	
+}
+
+</script>
 <section id=enroll-container>
 	<h2>회원 정보</h2>
 	<form id="memberUpdateFrm" method="post">

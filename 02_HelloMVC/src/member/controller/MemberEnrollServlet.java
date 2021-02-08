@@ -92,7 +92,7 @@ public class MemberEnrollServlet extends HttpServlet {
 			ENROLL_DATE          DATE 
 		 * 
 		 * */
-		int result = new MemberService().updateEnroll(member);
+		int result = new MemberService().insertMember(member);
 		
 		if(result != 0) {
 			request.setAttribute("msg", "회원가입에 성공했습니다.");

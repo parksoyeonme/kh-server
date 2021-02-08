@@ -98,7 +98,7 @@ $("#memberId_").change(function(){
 					<input type="text" placeholder="4글자이상" name="memberId" id="memberId_" required>
 					<input type="button" value="중복검사" onclick="checkIdDuplicate();"/>
 					<input type="hidden" id="idValid" value="0" />
-					<!-- 중복검사 통과인경우 1 / 통과하지 못한경우 0 -->
+					<%--중복검사 통과인경우 1 / 통과하지 못한경우 0 --%>
 				</td>
 			</tr>
 			<tr>

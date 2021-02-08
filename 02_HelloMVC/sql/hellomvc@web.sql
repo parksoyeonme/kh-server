@@ -44,3 +44,5 @@ create table member (
 	commit;
     
     desc member;
+    
+    delete from member where member_id = 'ybjooooon';

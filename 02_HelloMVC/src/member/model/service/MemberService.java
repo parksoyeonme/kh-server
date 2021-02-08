@@ -27,15 +27,41 @@ public class MemberService {
 		return member;
 	}
 
-	public int updateEnroll(Member member) {
+	public int insertMember(Member member) {
 		//1.Connection 객체생성
 		Connection conn = getConnection();
 		//2.dao 요청
-		int result = memberDao.updateEnroll(conn, member);
+		int result = memberDao.insertMember(conn, member);
 		//3.트랜잭션관리(DML관리)
 		//4.자원반납
 		close(conn);
 		return result;
 	}
+
+	public int updateMember(Member member) {
+		Connection conn = getConnection();
+		int result = memberDao.updateMember(conn, member);
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+
+	public int deleteMember(String memberId) {
+		Connection conn = getConnection();
+		int result = memberDao.deleteMember(conn, memberId);
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+
+	
 
 }
