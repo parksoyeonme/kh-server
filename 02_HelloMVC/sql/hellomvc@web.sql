@@ -46,3 +46,5 @@ create table member (
     desc member;
     
     delete from member where member_id = 'ybjooooon';
+    
+    update member set password = '1ARVn2Auq2/WAqx2gNrL+q3RNjAzXpUfCXrzkA6d4Xa22yhRLy4AC50E+6UTPoscbo31nbOoq51gvkuXzJ6B2w==';

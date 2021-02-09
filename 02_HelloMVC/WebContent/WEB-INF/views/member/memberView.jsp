@@ -17,11 +17,30 @@
 	System.out.println(hobbyList);
 %>
 <script>
-$(function(){   
+function deleteMember(){
+    var bool = confirm("정말로 탈퇴하시겠습니까?");
+    if(bool)
+        location.href = "<%=request.getContextPath() %>/member/memberDelete?memberId=<%=member.getMemberId()%>";
+}
+
+function updateMember(){
+	var url = "<%=request.getContextPath() %>/member/memberUpdate";
+	$("#memberUpdateFrm")
+		.attr('action',url)
+		.submit();	
+}
+
+function updatePassword(){
+	location.href = "<%= request.getContextPath() %>/member/updatePassword?memberId=<%= member.getMemberId() %>";
+}
+
+
+$(function(){
+	
 	/**
 	* 비밀번호 일치여부 검사
 	*/
-    $("#password2").blur(function(){
+    /* $("#password2").blur(function(){
         var $p1 = $("#password_");
         var $p2 = $("#password2");
         
@@ -29,15 +48,12 @@ $(function(){
             alert("패스워드가 일치하지 않습니다.");
             $p1.select();
         }
-    });
-    
-	/**
-	* 폼유효성 검사
-	*/
-    $("#memberUpdateFrm").submit(function(e){
-    	   	
-        //password
-        var $p1 = $("#password_");
+    }); */
+	
+	$("#memberUpdateFrm").submit(function(){
+		//유효성 검사
+		//password
+        /* var $p1 = $("#password_");
         var $p2 = $("#password2");
         if(/^[a-zA-Z0-9!@#$$%^&*()]{4,}/.test($p1.val()) == false){
         	alert("유효한 패스워드를 입력하세요.");
@@ -49,7 +65,7 @@ $(function(){
             alert("패스워드가 일치하지 않습니다.");
             $p1.select();
             return false;
-        }
+        } */
         
         //memberName
         var $memberName = $("#memberName");
@@ -71,17 +87,8 @@ $(function(){
         }
         
         return true;
-    });
-	    
+	});
 });
-
-function deleteMember(){
-	$("#memberUpdateFrm")
-		.attr("action", " <%= request.getContextPath() %>/member/memberDelete ")
-		.attr("method","POST")
-		.submit();
-	
-}
 
 </script>
 <section id=enroll-container>
@@ -94,7 +101,7 @@ function deleteMember(){
 					<input type="text" name="memberId" id="memberId_" value="<%= member.getMemberId() %>" readonly>
 				</td>
 			</tr>
-			<tr>
+			<%-- <tr>
 				<th>패스워드</th>
 				<td>
 					<input type="password" name="password" id="password_" value="<%= member.getPassword() %>" required>
@@ -105,7 +112,7 @@ function deleteMember(){
 				<td>	
 					<input type="password" id="password2" value="<%= member.getPassword() %>" required><br>
 				</td>
-			</tr> 
+			</tr>  --%>
 			<tr>
 				<th>이름</th>
 				<td>	
@@ -161,6 +168,7 @@ function deleteMember(){
 			</tr>
 		</table>
         <input type="button" onclick="updateMember();" value="정보수정"/>
+        <input type="button" onclick="updatePassword();" value="비밀번호수정"/>
         <input type="button" onclick="deleteMember();" value="탈퇴"/>
 	</form>
 </section>

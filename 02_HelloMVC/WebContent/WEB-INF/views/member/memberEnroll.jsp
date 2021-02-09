@@ -1,66 +1,92 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<section id=enroll-container>
 <script>
-//유효성검사해주기
 $(function(){
-	var frm = document.querySelector("[name=memberEnrollFrm]");
-	frm.onsubmit = function(){
-		if(memberId.value.length < 4){
-	 		alert("아이디는 4글자 이상이어야 합니다.");
-	        memberId.select();
-	        return false;//조기리턴 -> 폼제출방지
-	        }
-		
-		//아이디 중복검사
+    
+	/**
+	* 비밀번호 일치여부 검사
+	*/
+    $("#password2").blur(function(){
+        var $p1 = $("#password_");
+        var $p2 = $("#password2");
+        
+        if($p1.val() != $p2.val()){
+            alert("패스워드가 일치하지 않습니다.");
+            $p1.select();
+        }
+    });
+    
+	/**
+	* 폼유효성 검사
+	*/
+    $("[name=memberEnrollFrm]").submit(function(e){
+    	//memberId
+    	var $memberId = $("#memberId_");
+    	//아이디는 영문자/숫자  4글자이상만 허용 
+        if(/^[a-zA-Z0-9]{4,}$/.test($memberId.val()) == false){
+            alert("아이디는 최소 4자리이상이어야 합니다.");
+            $memberId.select();
+            return false;
+        }
+    	//아이디 중복검사
     	var $idValid = $("#idValid");
     	if($idValid.val() != 1){
     		alert("아이디 중복 검사해주세요.");
     		$idValid.focus();
     		return false;
     	}
+    	
+        //password
+        var $p1 = $("#password_");
+        var $p2 = $("#password2");
+        if(/^[a-zA-Z0-9!@#$$%^&*()]{4,}/.test($p1.val()) == false){
+        	alert("유효한 패스워드를 입력하세요.");
+        	$p1.select();
+            return false;
+        }
+        
+        if($p1.val() != $p2.val()){
+            alert("패스워드가 일치하지 않습니다.");
+            $p1.select();
+            return false;
+        }
+        
+        //memberName
+        var $memberName = $("#memberName");
+        if(/^[가-힣]{2,}$/.test($memberName.val()) == false){
+        	alert("이름은 한글 2글자 이상이어야 합니다.");
+        	$memberName.select();
+        	return false;
+        }
+        
+        //phone
+        var $phone = $("#phone");
+        //-제거하기
+        $phone.val($phone.val().replace(/[^0-9]/g, ""));//숫자아닌 문자(복수개)제거하기
+        
+        if(/^010[0-9]{8}$/.test($phone.val()) == false){
+        	alert("유효한 전화번호가 아닙니다.");
+        	$phone.select();
+        	return false;
+        }
+        
+        return true;
+    });
 	
-	        //2.이름 검사 
-	        if(/^[가-힣]{2,}$/.test(memberName.value) == false){
-	        //memberName.value이 정규식에 /^[가-힣]{2,}$/가 맞는가 test하겠다
-	        alert("이름은 한글 2글자 이상이어야합니다.");
-	        memberName.select();//다시리턴할때 여기로 ,멤버네임에 마우스올려준다 라고 해야하나
-	         //select memberName 블럭잡아줌 드래그처리
-	        return false;
-	        }
-	
-	        //3.비밀번호 검사 : 4글자이상 && (pwd.value == pwdCheck.value)
-	        if(pwd.value.length < 4){
-	        alert("비밀번호는 4글자 이상이어야 합니다.");
-	        pwd.select();
-	        return false;
-	        }
-	
-	        if(pwd.value != pwdCheck.value){
-	        alert("비밀번호가 일치하지 않습니다.");
-	        pwd.value = '';
-	        pwdCheck.value = '';
-	        pwd.focus();
-	        return false;
-	        }
-	
-	        return true;
-	
-	}
+	/**
+	* 중복 검사 이후 아이디를 변경한 경우, 다시 중복검사를 해야한다.
+	*/
+	$("#memberId_").change(function(){
+		$("#idValid").val(0);
+	});
+    
 });
+
 /**
-* 중복 검사 이후 아이디를 변경한 경우, 다시 중복검사를 해야한다.
-*/
-$("#memberId_").change(function(){
-	$("#idValid").val(0);
-});
-
-
-/*
- *  아이디 중복검사
+ * 아이디 중복검사
  */
- function checkIdDuplicate(){
+function checkIdDuplicate(){
 	//1. 아이디 유효성 검사
 	var $memberId = $(memberId_);
 	if(/^[a-zA-Z0-9_]{4,}$/.test($memberId.val()) == false){
@@ -68,29 +94,34 @@ $("#memberId_").change(function(){
 		$memberId.select();
 		return;
 	}
+	
+	//2. 팝업을 통해 중복검사
+	//폼제출 + 팝업
 	var title = "checkIdDuplicatePopup";
 	var spec = "left=500px, top=300px, width=300px, height=200px";
-	open("", title, spec); //open(url, title, spec);이게있어야팝업가능
-	
-	
+	open("", title, spec);
+
 	//var $frm = $("[name=checkIdDuplicateFrm]");
 	var $frm = $(document.checkIdDuplicateFrm);// name값은 document에서 바로 접근가능
 	//아이디값 세팅
 	$frm.find("[name=memberId]")
-		.val($memberId.val()); //위에 사용한 memberId사용
+		.val($memberId.val());
 	$frm.attr("action", "<%= request.getContextPath() %>/member/checkIdDuplicate")
 		.attr("method", "POST")
 		.attr("target", title) //폼과 팝업 연결 설정
 		.submit();
-	}
-
+}
 </script>
-<!-- 아이디 중복검사용 폼 : 노출되지않는다 hidden이기때문에 -->
+<!-- 아이디 중복검사용 폼 -->
 <form name="checkIdDuplicateFrm">
 	<input type="hidden" name="memberId" />
 </form>
+<section id=enroll-container>
 	<h2>회원 가입 정보 입력</h2>
-	<form name="memberEnrollFrm" action="<%=request.getContextPath() %>/member/memberEnroll" method="post">
+	<form 
+		name="memberEnrollFrm" 
+		action="" 
+		method="post">
 		<table>
 			<tr>
 				<th>아이디<sup>*</sup></th>
@@ -98,7 +129,7 @@ $("#memberId_").change(function(){
 					<input type="text" placeholder="4글자이상" name="memberId" id="memberId_" required>
 					<input type="button" value="중복검사" onclick="checkIdDuplicate();"/>
 					<input type="hidden" id="idValid" value="0" />
-					<%--중복검사 통과인경우 1 / 통과하지 못한경우 0 --%>
+					<%-- 중복검사 통과인경우 1 / 통과하지 못한 경우 0 --%>
 				</td>
 			</tr>
 			<tr>

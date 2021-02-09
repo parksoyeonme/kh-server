@@ -23,7 +23,7 @@ import static common.JDBCTemplate.close;
  */
 public class MemberDao {
 
-	private Properties prop = new Properties(); //prop 이라는 properties형식의 변수생성
+	private Properties prop = new Properties();
 	
 	/**
 	 * 객체 생성시 member-query.properties의 내용을 읽어다 prop필드에 저장
@@ -31,14 +31,13 @@ public class MemberDao {
 	public MemberDao() {
 		String fileName = "/sql/member/member-query.properties";
 		String path = MemberDao.class.getResource(fileName).getPath();
-		//우리가 웹상에서사용하는 파일경로를 묶어서 사용가능 .getrource를 경로를 
 		try {
 			prop.load(new FileReader(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//System.out.println("path@MemberDao = " + path);
-		//System.out.println("prop@MemberDao = " + prop);
+//		System.out.println("path@MemberDao = " + path);
+//		System.out.println("prop@MemberDao = " + prop);
 	}
 	
 	public Member selectOne(Connection conn, String memberId) {
@@ -71,58 +70,56 @@ public class MemberDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			//3.자원반납(ResultSet, PreparedStatement)
 			close(rset);
 			close(pstmt);
 		}
-		
-		
+//		System.out.println("member@dao = " + member);
 		return member;
 	}
 
 	public int insertMember(Connection conn, Member member) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		String sql = prop.getProperty("insertMember");
 		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("insertMember"); 
 		
 		try {
-			pstmt = conn.prepareStatement(sql);
-			
+			//미완성쿼리문을 가지고 객체생성.
+			pstmt = conn.prepareStatement(query);
+			//쿼리문미완성
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getPassword());
 			pstmt.setString(3, member.getMemberName());
-			pstmt.setNString(4, member.getMemberRole());
-			pstmt.setString(5, member.getGender());
-			pstmt.setDate(6, member.getBirthDay());
-			pstmt.setString(7, member.getEmail());
-			pstmt.setString(8, member.getPhone());
-			pstmt.setString(9, member.getAddress());
-			pstmt.setString(10, member.getHobby());
+			pstmt.setString(4, member.getGender());
+			pstmt.setDate(5, member.getBirthDay());
+			pstmt.setString(6, member.getEmail());
+			pstmt.setString(7, member.getPhone());
+			pstmt.setString(8, member.getAddress());
+			pstmt.setString(9, member.getHobby());
 			
+			//쿼리문실행 : 완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
+			//DML은 executeUpdate()
 			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
 			
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
-			//3.자원반납(ResultSet, PreparedStatement)
-			close(rset);
+		} finally {
 			close(pstmt);
-	}
+		}
 		
 		return result;
 	}
-
+	
 	public int updateMember(Connection conn, Member member) {
-		PreparedStatement pstmt = null;
 		int result = 0;
-		String sql = prop.getProperty("updateMember");
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("updateMember"); 
+
 		try {
-			//prepareStatement : SQL구문을 실행시키는 기능을 갖는 객체
 			//미완성쿼리문을 가지고 객체생성.
-			pstmt = conn.prepareStatement(sql);
-			//쿼리문미완성
+			pstmt = conn.prepareStatement(query);
+			//쿼리문값대입
 			pstmt.setString(1, member.getPassword());
 			pstmt.setString(2, member.getMemberName());
 			pstmt.setString(3, member.getGender());
@@ -134,10 +131,10 @@ public class MemberDao {
 			pstmt.setString(9, member.getMemberId());
 			
 			//쿼리문실행 : 완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
+			//DML은 executeUpdate()
 			result = pstmt.executeUpdate();
 			
-			
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			close(pstmt);
@@ -145,29 +142,31 @@ public class MemberDao {
 		
 		return result;
 	}
-
-	public int deleteMember(Connection conn, String memberId) {
-		PreparedStatement pstmt = null;
-		int result = 0;
-		String sql = prop.getProperty("deleteMember");
-		
-		try {
-			//prepareStatement : SQL구문을 실행시키는 기능을 갖는 객체
-			//미완성쿼리문을 가지고 객체생성.
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, memberId);
-			result = pstmt.executeUpdate();
-
-			
-		}catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-		}
-		
-		return result;
-	}
-
 	
+	public int deleteMember(Connection conn, String memberId) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("deleteMember"); 
+
+		try {
+			//미완성쿼리문을 가지고 객체생성.
+			pstmt = conn.prepareStatement(query);
+			//쿼리문미완성
+			pstmt.setString(1, memberId);
+			
+			//쿼리문실행 : 완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
+			//DML은 executeUpdate()
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+
 
 }

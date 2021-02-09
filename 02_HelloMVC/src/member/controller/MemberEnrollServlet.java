@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import common.util.MvcUtils;
 import member.model.service.MemberService;
 import member.model.vo.Member;
 
@@ -43,7 +44,7 @@ public class MemberEnrollServlet extends HttpServlet {
 		
 		//2. 사용자입력값 처리
 		String memberId = request.getParameter("memberId");
-		String password = request.getParameter("password");
+		String password = MvcUtils.getEncryptedPassword(request.getParameter("password"));
 		String memberName = request.getParameter("memberName");
 		String memberRole = "U";
 		String gender = request.getParameter("gender");

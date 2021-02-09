@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import member.model.service.MemberService;
+import member.model.vo.Member;
 
 /**
  * Servlet implementation class MemberDeleteServlet
@@ -18,38 +19,45 @@ import member.model.service.MemberService;
 @WebServlet("/member/memberDelete")
 public class MemberDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private MemberService memberService = new MemberService();
+	
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//1.전송값에 한글이 있을 경우 인코딩처리해야함.
+		request.setCharacterEncoding("UTF-8");//대소문자 상관없음. 요청한 view단의 charset값과 동일해야 한다.
+		
+		//2.전송값 꺼내서 변수에 기록하기.
+		String memberId = request.getParameter("memberId");
+		
+		//3.서비스로직호출
+		int result = memberService.deleteMember(memberId);
+		
+		//4. 받은 결과에 따라 뷰페이지 내보내기
+		String msg = "";
+		String loc = null;
+		HttpSession session = request.getSession();
+		if(result>0) {
+			msg = "성공적으로 회원정보를 삭제했습니다.";
+			loc = request.getContextPath() + "/member/logout";//회원탈퇴인 경우, 로그아웃 처리함.
+		}
+		else {
+			msg = "회원정보삭제에 실패했습니다.";
+			loc = request.getContextPath() + "/member/memberView?memberId=" + memberId;
+		}
+		
+		session.setAttribute("msg", msg);
+//		request.setAttribute("loc", loc);
+		
+		response.sendRedirect(request.getContextPath());
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//1. encoding처리
-		request.setCharacterEncoding("utf-8");
-		
-		//2. 사용자 입력 값 처리
-		String memberId = request.getParameter("memberId");
-		int result = new MemberService().deleteMember(memberId);
-	
-		String msg = "";
-		String loc = request.getContextPath();
-		String view = "/index.jsp";
-		
-		if(result>0) {
-			msg = "탈퇴되었습니다";
-		}else {
-			msg = "실패했습니다";
-		}
-		
-		HttpSession session = request.getSession(false);
-		if(session != null) {
-			session.invalidate();
-		}
-		
-		request.setAttribute("msg", msg);
-		request.setAttribute("loc", loc);
-		
-		RequestDispatcher reqDispatcher = request.getRequestDispatcher(view);
-		reqDispatcher.forward(request, response);
+		doGet(request, response);
 	}
 
 }

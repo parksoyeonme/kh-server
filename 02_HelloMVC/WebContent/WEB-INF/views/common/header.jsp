@@ -2,8 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ page import="member.model.vo.Member"%>
 <%
-	String msg = (String)request.getAttribute("msg");
+	String msg = (String)session.getAttribute("msg");
+	if(msg != null) session.removeAttribute("msg");//1회 사용후 폐기
 	//System.out.println("msg@header.jsp = " + msg);
+	
 	String loc = (String)request.getAttribute("loc");
 	//System.out.println("loc@header.jsp = " + loc);
 	Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
@@ -11,17 +13,16 @@
 	
 	//서버로 전송된 쿠키값 확인
 	String saveId = null;
-	Cookie [] cookies = request.getCookies();
+	Cookie[] cookies = request.getCookies();
 	if(cookies != null){
 		for(Cookie c : cookies){
-			//System.out.println(c.getName() + " : " + c.getValue()); // mvc/에서 cookie값을빼온거임
+			//System.out.println(c.getName() + " : " + c.getValue());
 			if("saveId".equals(c.getName())){
 				saveId = c.getValue();
 				break;
-				
 			}
 		}
-		//System.out.println("saveId@servlet.jsp = " + saveId);
+		//System.out.println("saveId@header.jsp = " + saveId);
 	}
 	
 %>
@@ -84,7 +85,7 @@ $(function(){
 					method="POST">
 					<table>
 						<tr>
-							<td>
+							<td>	
 								<input 
 									type="text" 
 									name="memberId" 
@@ -101,8 +102,13 @@ $(function(){
 						</tr>
 						<tr>
 							<td colspan="2">
-								<input type="checkbox" name="saveId" id="saveId" <%= saveId != null ? "checked" : "" %>/>
-								<label for="saveId">아이디저장</label>&nbsp;&nbsp;
+								<input 
+									type="checkbox" 
+									name="saveId" 
+									id="saveId" 
+									<%= saveId != null ? "checked" : "" %>/>
+								<label for="saveId">아이디저장</label>
+								&nbsp;&nbsp;
 								<input 
 									type="button" 
 									value="회원가입"

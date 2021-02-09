@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import member.model.service.MemberService;
 import member.model.vo.Member;
@@ -16,37 +17,26 @@ import member.model.vo.Member;
 /**
  * Servlet implementation class MemberUpdateServlet
  */
-@WebServlet("/member/memberUpdate")
+@WebServlet(name="MemberUpdateServlet", urlPatterns="/member/memberUpdate")
 public class MemberUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//1. encoding처리
-		request.setCharacterEncoding("utf-8");
+		//1.전송값에 한글이 있을 경우 인코딩처리해야함.
+		//void javax.servlet.ServletRequest.setCharacterEncoding(String arg0) throws UnsupportedEncodingException
+		request.setCharacterEncoding("UTF-8");//대소문자 상관없음. 요청한 view단의 charset값과 동일해야 한다.
 		
-		//2. 사용자입력값 처리
+		//2.전송값 꺼내서 변수에 기록하기.
+		//String javax.servlet.ServletRequest.getParameter(String arg0)
+		String memberId = request.getParameter("memberId");
 		String password = request.getParameter("password");
 		String memberName = request.getParameter("memberName");
+		String birthDay = request.getParameter("birthDay");
 		String gender = request.getParameter("gender");
-		
-		Date birthDay = null;
-		String date = request.getParameter("birthDay");
-		if(!(date.equals(""))) {
-			birthDay = Date.valueOf(date);
-		}
-		
 		String email = request.getParameter("email");
-		if(email.equals("")) {
-	         email = null;
-	      }
 		String phone = request.getParameter("phone");
 		String address = request.getParameter("address");
-		if(address.equals("")) {
-	         address = null;
-	      }
 		
 		//체크박스같은 경우 선택된 복수의 값이 배열로 전달된다.
 		//String[] javax.servlet.ServletRequest.getParameterValues(String arg0)
@@ -55,35 +45,41 @@ public class MemberUpdateServlet extends HttpServlet {
 		String hobby = "";
 		//String java.lang.String.join(CharSequence delimiter, CharSequence... elements)
 		//파라미터로 전달한 문자열배열이 null이면, NullPointerException유발.
-		if(hobbies != null) hobby = String.join(",", hobbies);
+		if(hobbies!=null) hobby = String.join(",", hobbies);
 
-		Member member = new Member();
-		member.setPassword(password);
-		member.setMemberName(memberName);
-		member.setGender(gender);
-		member.setBirthDay(birthDay);
-		member.setEmail(email);
-		member.setPhone(phone);
-		member.setAddress(address);
-		member.setHobby(hobby);
+		//날짜타입으로 변경 : 1990-09-09
+		Date birthDay_ = null;
+		if(birthDay != null && !"".equals(birthDay))
+			birthDay_ = Date.valueOf(birthDay);
 		
-			
-		int result = new MemberService().updateMember(member);
+		Member member = new Member(memberId, password, memberName, "U", gender, birthDay_, email, phone, address, hobby, null);
+
+		System.out.println("입력한 회원정보 : "+member);
 		
-		if(result != 0) {
-			request.setAttribute("msg", "수정 성공했습니다.");
+		//3.서비스로직호출
+		int result = memberService.updateMember(member);  
+		
+		//4. 받은 결과에 따라 뷰페이지 내보내기
+//		String view = "/index.jsp";
+		String msg = null;
+		String loc = request.getContextPath() + "/member/memberView?memberId=" + member.getMemberId();
+		HttpSession session = request.getSession();
+		if(result>0){
+			msg = "성공적으로 회원정보를 수정했습니다.";
 			
-		}else {
-			request.setAttribute("msg", "수정 실패했습니다.");	
+			//세션의 memberLoggedIn객체도 최신화
+			session.setAttribute("memberLoggedIn", memberService.selectOne(memberId));
 		}
-		request.setAttribute("loc", request.getContextPath());
+		else {
+			msg = "회원정보수정에 실패했습니다.";	
+		}
 		
-		RequestDispatcher reqDispatcher = 
-				request.getRequestDispatcher("/member/memberView.jsp");
-		reqDispatcher.forward(request, response);
+		session.setAttribute("msg", msg);
+		
+		
+		response.sendRedirect(loc);
+//		RequestDispatcher reqDispatcher = request.getRequestDispatcher(view);
+//		reqDispatcher.forward(request, response);
 	}
 
 }
-
-
-// 실패
