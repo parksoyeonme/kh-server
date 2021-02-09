@@ -11,7 +11,7 @@ import static common.JDBCTemplate.*;
  * Connection객체생성
  * Dao에 업무로직 하달
  * 트랜잭션처리
- * 자원반납
+ * 자원반납 
  */
 public class MemberService {
 

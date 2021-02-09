@@ -19,7 +19,7 @@ import static common.JDBCTemplate.close;
  * - DML int리턴 
  * - DQL ResultSet리턴 -> 자바객체로 데이터 이전
  * 
- * 자원반납
+ * 자원반납 
  */
 public class MemberDao {
 
