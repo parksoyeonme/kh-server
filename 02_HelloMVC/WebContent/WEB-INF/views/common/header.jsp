@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="member.model.vo.Member"%>
+<%@ page import="member.model.service.MemberService"%>
 <%
 	String msg = (String)session.getAttribute("msg");
 	if(msg != null) session.removeAttribute("msg");//1회 사용후 폐기
@@ -143,9 +144,13 @@ $(function(){
 			<!-- 메인메뉴 시작 -->
 			<nav>
 				<ul class="main-nav">
-					<li class="home"><a href="#">Home</a></li>
+					<li class="home"><a href="<%= request.getContextPath() %>">Home</a></li>
 					<li id="notice"><a href="#">공지사항</a></li>
 					<li id="board"><a href="#">게시판</a></li>
+					<%-- 관리자메뉴 : 관리자만 노출 --%>
+					<% if(memberLoggedIn != null && MemberService.ADMIN_MEMBER_ROLE.equals(memberLoggedIn.getMemberRole())){ %>
+					<li id="admin-memberList"><a href="<%= request.getContextPath() %>/admin/memberList">회원관리</a></li>
+					<% } %>
 				</ul>
 			</nav>
 			<!-- 메인메뉴 끝-->

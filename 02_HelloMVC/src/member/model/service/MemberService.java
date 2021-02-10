@@ -11,10 +11,13 @@ import static common.JDBCTemplate.*;
  * Connection객체생성
  * Dao에 업무로직 하달
  * 트랜잭션처리
- * 자원반납 
+ * 자원반납
  */
 public class MemberService {
-
+	
+	public static final String ADMIN_MEMBER_ROLE = "A";//관리자 롤
+	public static final String USER_MEMBER_ROLE = "U";//일반사용자 롤
+	
 	private MemberDao memberDao = new MemberDao();
 
 	public Member selectOne(String memberId) {
@@ -61,11 +64,10 @@ public class MemberService {
 		close(conn);
 		return result;
 	}
-
-	public int updatePassword(String memberId, String updatePassword) {
-		Connection conn =getConnection();
-		int result = memberDao.updatePassword(conn, memberId, updatePassword);
-		
+	
+	public int updatePassword(Member member) {
+		Connection conn = getConnection();
+		int result = memberDao.updatePassword(conn, member);
 		if(result>0)
 			commit(conn);
 		else 
@@ -73,6 +75,7 @@ public class MemberService {
 		close(conn);
 		return result;
 	}
+
 
 
 

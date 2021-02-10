@@ -32,7 +32,7 @@ public class JDBCTemplate {
 			String fileName = "/data-source.properties";//classpath의 루트디렉토리
 			String path = JDBCTemplate.class.getResource(fileName).getPath();//절대경로
 			prop.load(new FileReader(path));
-			System.out.println("path@JDBCTemplate = " + path);
+			//System.out.println("path@JDBCTemplate = " + path);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -52,15 +52,11 @@ public class JDBCTemplate {
 	}
 	
 	public static Connection getConnection() {
-		
 		Connection conn = null;
-
 		try {
-			
 			//2. db connection객체 생성 : dbserver url, user, password
 			conn = DriverManager.getConnection(url, user, password);
 			conn.setAutoCommit(false);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
@@ -112,6 +108,7 @@ public class JDBCTemplate {
 		}
 	}
 }
+
 
 
 
