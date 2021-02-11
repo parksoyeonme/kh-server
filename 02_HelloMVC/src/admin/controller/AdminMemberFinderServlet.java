@@ -23,7 +23,8 @@ public class AdminMemberFinderServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. 사용자 입력값 처리
-		
+		String searchType = request.getParameter("searchType");
+		String searchKeyword = request.getParameter("searchKeyword");
 		//2. 업무로직 : 검색
 		List<Member> list = adminService.selectMembersBy(searchType, searchKeyword);
 		System.out.println(list);
