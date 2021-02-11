@@ -72,6 +72,7 @@ public class AdminDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("updateMemberRole");
+		//filter해야함
 		
 		try {
 			//1. PreparedStatement객체 생성 및 쿼리 값대입
@@ -90,6 +91,45 @@ public class AdminDao {
 		}
 		return result;
 	}
+
+	public List<Member> selectMembersBy(Connection conn, String searchType, String searchKeyword) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("selectMembersBy");
+		List<Member> list = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			list = new ArrayList<Member>();
+			
+			
+			while(rset.next()) {
+				Member member = new Member();
+				member.setMemberId(rset.getString("member_id"));
+				member.setPassword(rset.getString("password"));
+				member.setMemberName(rset.getString("member_name"));
+				member.setMemberRole(rset.getString("member_role"));
+				member.setGender(rset.getString("gender"));
+				member.setBirthDay(rset.getDate("birthday"));
+				member.setEmail(rset.getString("email"));
+				member.setPhone(rset.getString("phone"));
+				member.setAddress(rset.getString("address"));
+				member.setHobby(rset.getString("hobby"));
+				member.setEnrollDate(rset.getDate("enroll_date"));
+				list.add(member);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			//5. 자원반납
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+
 	
 	
 }
