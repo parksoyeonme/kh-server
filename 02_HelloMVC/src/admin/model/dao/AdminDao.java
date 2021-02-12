@@ -96,10 +96,31 @@ public class AdminDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String sql = prop.getProperty("selectMembersBy");
+//		if(searchType == null & searchKeyword == null)
+//			sql = "select * from member order by enroll_date desc";
+//    	else if(searchType.equals("member_id"))    //아이디로 검색할 때
+//    		sql ="select * from member where member_id =?";
+//		else if(searchType.equals("member_name"))    // 이름으로 검색할 때
+//			sql ="select * from member where member_name =?";
+//	    else if(searchType.equals("gender"))    // 성별로 검색할 때
+//	    	sql ="select * from member where gender=?";
+	
 		List<Member> list = null;
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
+			
+//			if(searchType == null & searchKeyword == null)
+//				pstmt = conn.prepareStatement("select * from member order by enroll_date desc");
+//	    	else if(searchType.equals("member_id"))    //아이디로 검색할 때
+//	    		pstmt = conn.prepareStatement("select * from member where member_id =?");
+//			else if(searchType.equals("member_name"))    // 이름으로 검색할 때
+//				pstmt = conn.prepareStatement("select * from member where member_name =?");
+//		    else if(searchType.equals("gender"))    // 성별로 검색할 때
+//		    	pstmt = conn.prepareStatement("select * from member where gender=?");
+			
+			pstmt.setString(1, searchKeyword);
+			//안된다 안돼
 			rset = pstmt.executeQuery();
 			list = new ArrayList<Member>();
 			
