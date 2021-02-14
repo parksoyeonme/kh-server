@@ -34,7 +34,6 @@ public class AdminUpdateMemberRoleServlet extends HttpServlet {
 		//3.view처리 : sendRedirect("/mvc/admin/memberList")
 		//정상적으로  변경되었습니다. | 변경 실패했습니다.
 		
-		
 		request.getSession().setAttribute("msg", msg);
 		response.sendRedirect(request.getContextPath() + "/admin/memberList");
 		

@@ -46,6 +46,8 @@ public class MemberLoginServlet extends HttpServlet {
 		//		b. 비밀번호가 일치하지 않는 경우
 		// - c. member객체가 존재하지 않을 경우 : 아이디오류
 		Member member = memberService.selectOne(memberId);
+		//member를연 db랑 연결해서 id를 받아오겠다
+		
 //		System.out.println("member@servlet = " + member);
 		
 		//로그인 성공
@@ -88,6 +90,7 @@ public class MemberLoginServlet extends HttpServlet {
 			
 			//4. redirection처리 : 요청 url을 변경
 			//주어진 주소(location)로 클라이언트에게 다시 요청하라는 응답
+			//sendRedirect는 doGet방식
 			response.sendRedirect(request.getContextPath());
 			
 		}

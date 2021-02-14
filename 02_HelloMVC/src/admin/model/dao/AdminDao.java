@@ -96,6 +96,10 @@ public class AdminDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String sql = prop.getProperty("selectMembersBy");
+		sql = sql.replace("#" , searchType);
+		//select * from member where # like '%'||?||'%'
+		//#은 searchType에따라 바뀐다.
+		
 //		if(searchType == null & searchKeyword == null)
 //			sql = "select * from member order by enroll_date desc";
 //    	else if(searchType.equals("member_id"))    //아이디로 검색할 때

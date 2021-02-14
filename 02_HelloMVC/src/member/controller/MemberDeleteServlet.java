@@ -49,7 +49,7 @@ public class MemberDeleteServlet extends HttpServlet {
 		
 		session.setAttribute("msg", msg);
 //		request.setAttribute("loc", loc);
-		
+		//아래 코드는 없어도 제대로 작동할 듯
 		response.sendRedirect(request.getContextPath());
 	}
 
