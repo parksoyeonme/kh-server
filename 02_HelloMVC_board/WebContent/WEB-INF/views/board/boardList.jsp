@@ -35,7 +35,11 @@ List<Board> list = (List<Board>)request.getAttribute("list");
 				<td><%= b.getBoardTitle()%></td>
 				<td><%= b.getBoardWriter()%></td>
 				<td><%= b.getBoardDate()%></td>
-				<td><%= b.getBoardRenamedFileName() != null ? "<img src='/images/file.png'>" : ""%></td>
+				<td>
+					<% if(b.getBoardOriginalFileName() != null){ %>
+						<img alt="첨부파일" src="<%= request.getContextPath()%>/images/file.png" width="16px">
+					<% } %>
+				</td>
 				<td><%= b.getBoardReadCount()%></td>
 			</tr>
 		<% 	} 
