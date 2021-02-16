@@ -147,7 +147,7 @@ $(function(){
 				<ul class="main-nav">
 					<li class="home"><a href="<%= request.getContextPath() %>">Home</a></li>
 					<li id="notice"><a href="#">공지사항</a></li>
-					<li id="board"><a href="#">게시판</a></li>
+					<li id="board"><a href="<%= request.getContextPath() %>/board/boardList">게시판</a></li>
 					<%-- 관리자메뉴 : 관리자만 노출 --%>
 					<% if(memberLoggedIn != null && MemberService.ADMIN_MEMBER_ROLE.equals(memberLoggedIn.getMemberRole())){ %>
 					<li id="admin-memberList"><a href="<%= request.getContextPath() %>/admin/memberList">회원관리</a></li>

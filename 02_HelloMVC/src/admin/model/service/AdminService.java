@@ -4,6 +4,7 @@ import static common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import admin.model.dao.AdminDao;
 import member.model.vo.Member;
@@ -12,9 +13,9 @@ public class AdminService {
 
 	private AdminDao adminDao = new AdminDao();
 
-	public List<Member> selectList() {
+	public List<Member> selectList(int cpage, int numPerPage) {
 		Connection conn = getConnection();
-		List<Member> list = adminDao.selectList(conn);
+		List<Member> list = adminDao.selectList(conn, cpage, numPerPage);
 		close(conn);
 		return list;
 	}
@@ -28,11 +29,34 @@ public class AdminService {
 		return result;
 	}
 
-	public List<Member> selectMembersBy(String searchType, String searchKeyword) {
+//	public List<Member> selectMembersBy(String searchType, String searchKeyword) {
+//		Connection conn = getConnection();
+//		List<Member> list= adminDao.selectMembersBy(conn, searchType, searchKeyword);
+//		close(conn);
+//		return list;
+//	}
+
+	public int selectTotalMembers() {
 		Connection conn = getConnection();
-		List<Member> list = adminDao.selectMembersBy(conn, searchType, searchKeyword);
+		int totalContents = adminDao.selectTotalMember(conn);
+		close(conn);
+		return totalContents;
+	}
+
+	public List<Member> selectMembersBy(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Member> list= adminDao.selectMembersBy(conn, param);
 		close(conn);
 		return list;
 	}
 
+	public int selectTotalMembersBy(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int totalContents = adminDao.selectTotalMembersBy(conn, param);
+		close(conn);
+		return totalContents;
+	}
+	
+	
+	
 }

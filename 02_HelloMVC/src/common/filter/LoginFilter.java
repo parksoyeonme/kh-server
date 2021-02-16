@@ -18,7 +18,12 @@ import member.model.vo.Member;
 /**
  * Servlet Filter implementation class LoginFilter
  */
-@WebFilter({ "/member/memberView", "/member/memberUpdate", "/member/memberDelete" })
+@WebFilter({ 
+	"/member/memberView", 
+	"/member/memberUpdate", 
+	"/member/memberDelete",
+	"/board/boardEnroll"
+})
 public class LoginFilter implements Filter {
 
     /**
