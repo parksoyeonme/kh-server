@@ -55,8 +55,8 @@ public class BoardUpdateServlet extends HttpServlet {
 		String boardRenamedFileName = multipartReq.getFilesystemName("upFile");
 		
 		
-		Board board = new Board(0, boardTitle, boardWriter, boardContent, null, null, null, 0);
-		int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+		int boardNo = Integer.parseInt(multipartReq.getParameter("boardNo"));
+		Board board = new Board(boardNo, boardTitle, boardWriter, boardContent, null, null, null, 0);
 
 		
 		//2. 업무로직 : Board객체 db저장 요청
@@ -68,7 +68,11 @@ public class BoardUpdateServlet extends HttpServlet {
 		
 		
 		request.getSession().setAttribute("msg", msg);
-		response.sendRedirect(request.getContextPath() + "/board/boardView?boardNo=" + board.getBoardNo());
+		String location = result > 0? 
+	            request.getContextPath() + "/board/boardView?boardNo=" + board.getBoardNo():
+	            request.getContextPath() + "/board/boardList";
+	            
+	      response.sendRedirect(location);
 		
 				
 			}
