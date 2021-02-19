@@ -118,7 +118,6 @@ function checkIdDuplicate(){
 </form>
 <section id=enroll-container>
 	<h2>회원 가입 정보 입력</h2>
-	<!-- action   /member/memberEnroll -->
 	<form 
 		name="memberEnrollFrm" 
 		action="" 

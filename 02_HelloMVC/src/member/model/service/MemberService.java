@@ -14,6 +14,7 @@ import static common.JDBCTemplate.*;
  * 자원반납
  */
 public class MemberService {
+	
 	public static final String ADMIN_MEMBER_ROLE = "A";//관리자 롤
 	public static final String USER_MEMBER_ROLE = "U";//일반사용자 롤
 	

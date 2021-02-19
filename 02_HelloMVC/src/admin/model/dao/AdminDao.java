@@ -195,7 +195,7 @@ public class AdminDao {
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1,  "%" + param.get("searchKeyword") + "%");
+			pstmt.setString(1, "%" + param.get("searchKeyword") + "%");
 			rset = pstmt.executeQuery();
 			if(rset.next()) {
 				totalContents = rset.getInt(1);//컬럼순서로 가져옴.
@@ -210,6 +210,7 @@ public class AdminDao {
 	}
 	
 }
+
 
 
 

@@ -48,8 +48,6 @@ function confirmMemberId(){
 	//현재 팝업윈도우 닫기
 	close();
 }
-
-
 </script>
 </head>
 <body>
@@ -75,6 +73,7 @@ function confirmMemberId(){
 	</div>
 </body>
 </html>
+
 
 
 

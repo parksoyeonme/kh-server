@@ -25,6 +25,7 @@
 		}
 		//System.out.println("saveId@header.jsp = " + saveId);
 	}
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -79,7 +80,6 @@ $(function(){
 			<!-- 로그인메뉴 시작 -->
 			<div class="login-container">
 			<% if(memberLoggedIn == null){ %>
-				<!-- POST 방식으로 전송하고 싶으면 form을 만들어서 아래와 같이 전송할 수 있다. -->
 				<form 
 					id="loginFrm"
 					action="<%= request.getContextPath() %>/member/login"
@@ -114,7 +114,6 @@ $(function(){
 									type="button" 
 									value="회원가입"
 									onclick="location.href='<%= request.getContextPath() %>/member/memberEnroll';">
-
 							</td>
 						</tr>
 					</table>

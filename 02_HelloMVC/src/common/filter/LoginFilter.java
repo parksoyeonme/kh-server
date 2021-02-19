@@ -51,7 +51,7 @@ public class LoginFilter implements Filter {
 		//로그인하지 않은 경우
 		if(memberLoggedIn == null) {
 			HttpServletResponse httpResp = (HttpServletResponse)response;
-			session.setAttribute("msg", "로그인 후 이용하실 수 있습니다");
+			session.setAttribute("msg", "로그인 후 이용하실 수 있습니다.");
 			httpResp.sendRedirect(httpReq.getContextPath());
 			return;
 		}

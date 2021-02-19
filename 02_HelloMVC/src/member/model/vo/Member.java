@@ -10,10 +10,11 @@ import javax.servlet.http.HttpSessionBindingListener;
  * 
  * member테이블의 한행에 상응하는 vo클래스
  * (dto, entity, bean)
- * 
- * HttpSessionBindingListener인터페이스 구현
- * 현재객체가 session에 속성으로 등록 혹은 해체되는 이벤트 감지처리
  *
+ *
+ * HttpSessionBindingListener인터페이스 구현
+ * 현재객체가 session에 속성으로 등록 혹은 해제되는 이벤트 감지처리
+ * 
  */
 public class Member implements Serializable, HttpSessionBindingListener {
 
@@ -124,19 +125,17 @@ public class Member implements Serializable, HttpSessionBindingListener {
 				+ ", phone=" + phone + ", address=" + address + ", hobby=" + hobby + ", enrollDate=" + enrollDate + "]";
 	}
 
-	/*
-	 * 세션에 memeberLoggedIn 등록되는 경우
-	 * */
+	/**
+	 * 세션에 memberLoggedIn 등록되는 경우
+	 */
 	@Override
 	public void valueBound(HttpSessionBindingEvent event) {
-//		System.out.println("[" + memberId + "]님이 로그인 하였습니다");
-		
+//		System.out.println("[" + memberId + "]님이 로그인 하였습니다.");
 	}
 
 	@Override
 	public void valueUnbound(HttpSessionBindingEvent event) {
-//		System.out.println("[" + memberId + "]님이 로그아웃 하였습니다");
-		
+//		System.out.println("[" + memberId + "]님이 로그아웃 하였습니다.");		
 	}
 	
 	

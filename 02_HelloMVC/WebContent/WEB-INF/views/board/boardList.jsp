@@ -1,16 +1,14 @@
+﻿<%@page import="board.model.vo.Board"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="board.model.vo.Board"%>
-<%@page import="java.util.List"%>
 <%
-List<Board> list = (List<Board>)request.getAttribute("list");
+	List<Board> list = (List<Board>)request.getAttribute("list");
 %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/board.css" />
-<%-- jsp선언할떄 동일한 이름경로 선언안하도록 조심 --%>
 <section id="board-container">
 	<h2>게시판 </h2>
-	<%--로그인시에만 보일수있게 --%>
 	<% if(memberLoggedIn != null){ %>
 	<input 
 		type="button" 
@@ -18,6 +16,7 @@ List<Board> list = (List<Board>)request.getAttribute("list");
 		id="btn-add"
 		onclick="location.href='<%= request.getContextPath() %>/board/boardEnroll';" />
 	<% } %>
+	
 	<table id="tbl-board">
 		<tr>
 			<th>번호</th>
@@ -27,40 +26,24 @@ List<Board> list = (List<Board>)request.getAttribute("list");
 			<th>첨부파일</th><%--첨부파일이 있는 경우(board_renamed_filename등이 null이 아닌 경우) /images/file.png 표시 width:16px --%>
 			<th>조회수</th>
 		</tr>
-		<tbody>
-		<% if(list == null || list.isEmpty()) { %>
-			<%--조회된 결과가 없는 경우 --%>
-			<tr>
-				<td colspan="6" style="text-align:center;">
-					조회된 결과가 없습니다.
-				</td>
-			</tr>
-		
-		<% } else { 
-			for(Board b : list) { %>
-			<%--조회된 결과가 있는 경우 --%>
-			<tr>
-				<td><%= b.getBoardNo()%></td>
-				<td><%= b.getBoardTitle()%></td>
-				<td><%= b.getBoardWriter()%></td>
-				<td><%= b.getBoardDate()%></td>
-				<td>
-					<% if(b.getBoardOriginalFileName() != null){ %>
-						<img alt="첨부파일" src="<%= request.getContextPath()%>/images/file.png" width="16px">
-					<% } %>
-				</td>
-				<td><%= b.getBoardReadCount()%></td>
-			</tr>
-		<% 	} 
-		  } %>
-			
-		
-		</tbody>
-		
+		<% for(Board b : list){ %>
+		<tr>
+			<td><%= b.getBoardNo() %></td>
+			<td>
+				<a href="<%= request.getContextPath()%>/board/boardView?boardNo=<%= b.getBoardNo()%>"><%= b.getBoardTitle() %></a>
+			</td>
+			<td><%= b.getBoardWriter() %></td>
+			<td><%= b.getBoardDate() %></td>
+			<td>
+			<% if(b.getBoardOriginalFileName() != null){ %>
+				<img alt="첨부파일" src="<%=request.getContextPath() %>/images/file.png" width="16px">
+			<% }%>
+			</td>
+			<td><%=b.getBoardReadCount() %></td>
+		</tr>
+		<% } %>
 	</table>
 
-	<div id='pageBar'>
-		<%= request.getAttribute("pageBar") %>
-	</div>
+	<div id='pageBar'><%=request.getAttribute("pageBar") %></div>
 </section>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

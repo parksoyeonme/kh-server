@@ -36,7 +36,7 @@ public class LoggerFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		//서블릿 가기전
 		HttpServletRequest httpReq = (HttpServletRequest)request;
-		String uri = httpReq.getRequestURI(); //요청 uri
+		String uri = httpReq.getRequestURI();
 		System.out.println("=======================================");
 		System.out.println(uri);
 		System.out.println("---------------------------------------");
@@ -45,7 +45,7 @@ public class LoggerFilter implements Filter {
 		
 		//서블릿 종료후
 		System.out.println("_______________________________________");
-		System.out.println("encodeFilter 응답!");
+		System.out.println();
 	}
 
 	/**

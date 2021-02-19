@@ -30,6 +30,7 @@ public class AdminMemberFinderServlet extends HttpServlet {
 		//1. 사용자 입력값 처리
 		String searchType = request.getParameter("searchType");
 		String searchKeyword = request.getParameter("searchKeyword");
+		
 		int numPerPage = 10;
 		int cpage = 1;
 		try {
@@ -55,8 +56,10 @@ public class AdminMemberFinderServlet extends HttpServlet {
 		// /mvc/admin/memberFinder
 		String url = request.getRequestURI() 
 				   + "?searchType=" + searchType 
-				   + "&searchKeyword=" + searchKeyword; //다음페이지를 연결하는 링크
+				   + "&searchKeyword=" + searchKeyword; 
 		String pageBar = MvcUtils.getPageBar(totalContents, cpage, numPerPage, url);
+		
+		
 		
 		//3. view단 처리 : fowarding /WEB-INF/views/memberList.jsp
 		request.setAttribute("list", list);

@@ -65,15 +65,14 @@ public class MvcUtils {
 	 * @return
 	 */
 	public static String getPageBar(int totalContents, int cpage, int numPerPage, String url) {
-		String pageBar = ""; //html을 만들어 리턴할 최종적인 변수
-		int pageBarSize = 5; //페이지 바에 몇개 나올 것인지
-		int totalPage = (int)Math.ceil((double)totalContents / numPerPage); 
-		//소수점이 나올수도있기 때문에 double로 형변환했다가 다시 int로
+		String pageBar = "";
 		
-		// /mvc/admin/memberList?cpage= 이런식으로 나와야함
-		// /mvc/admin/memberFinder?searchType =memberId&searchKeyword=a$cpage=
-		url = url + (url.indexOf("?") > -1 ? "&" : "?") +"cpage=";
-		//일치하는 값 없으면 -1리턴 ,,, "?"가 없으면-1
+		int pageBarSize = 5;
+		int totalPage = (int)Math.ceil((double)totalContents / numPerPage);
+
+		// /mvc/admin/memberList?cpage=
+		// /mvc/admin/memberFinder?searchType=memberId&searchKeyward=a&cpage=
+		url = url + (url.indexOf("?") > -1 ? "&" : "?") + "cpage=";
 		
 		// 1 2 3 4 5 : pageStart 1 ~ pageEnd 5 
 		// 6 7 8 9 10 : pageStart 6 ~ pageEnd 10 

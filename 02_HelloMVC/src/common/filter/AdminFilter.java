@@ -1,6 +1,7 @@
 package common.filter;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -39,18 +40,16 @@ public class AdminFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		//관리자가 아닌 부정요청에 대한 처리
 		HttpServletRequest httpReq = (HttpServletRequest)request;
 		HttpSession session = httpReq.getSession();
-		Member memberLoggedIn = (Member)session.getAttribute("memberLoggedIn");
+		Member memberLoggedIn = ((Member)session.getAttribute("memberLoggedIn"));
 		
-		if(memberLoggedIn == null
-		|| !memberLoggedIn.getMemberRole().equals(MemberService.ADMIN_MEMBER_ROLE)){
-			HttpServletResponse httpResp = (HttpServletResponse)response;
+		if(memberLoggedIn==null || !MemberService.ADMIN_MEMBER_ROLE.equals(memberLoggedIn.getMemberRole())){
 			session.setAttribute("msg", "잘못된 경로로 접근하셨습니다.");
-			httpResp.sendRedirect(httpReq.getContextPath());
+			((HttpServletResponse)response).sendRedirect(httpReq.getContextPath());
 			return;
 		}
-
 		
 		chain.doFilter(request, response);
 	}

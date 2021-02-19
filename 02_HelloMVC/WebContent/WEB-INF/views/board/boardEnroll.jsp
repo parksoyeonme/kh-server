@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>    
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/board.css" />
@@ -25,7 +25,7 @@ function boardValidate(){
 	//아무글자 또는 개행문자가 1개이상
 	if(/^(.|\n){1,}$/.test($boardContent.val()) == false){
 		alert("내용을 입력하세요.");
-		return false; 
+		return false;
 	}
 
 	return true;
@@ -38,7 +38,7 @@ function boardValidate(){
 	action="<%=request.getContextPath() %>/board/boardEnroll" 
 	method="post"
 	enctype="multipart/form-data">
-	<!-- 파일업로드가 포함된 폼 전송시 필수 속성  enctype="multipart/form-data" post방식에서만 가능-->
+	<!-- 파일업로드가 포함된 폼 전송시 필수 속성  enctype="multipart/form-data" -->
 	<table id="tbl-board-view">
 	<tr>
 		<th>제 목</th>

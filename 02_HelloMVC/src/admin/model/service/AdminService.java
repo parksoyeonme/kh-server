@@ -29,13 +29,6 @@ public class AdminService {
 		return result;
 	}
 
-//	public List<Member> selectMembersBy(String searchType, String searchKeyword) {
-//		Connection conn = getConnection();
-//		List<Member> list= adminDao.selectMembersBy(conn, searchType, searchKeyword);
-//		close(conn);
-//		return list;
-//	}
-
 	public int selectTotalMembers() {
 		Connection conn = getConnection();
 		int totalContents = adminDao.selectTotalMember(conn);
@@ -56,7 +49,4 @@ public class AdminService {
 		close(conn);
 		return totalContents;
 	}
-	
-	
-	
 }

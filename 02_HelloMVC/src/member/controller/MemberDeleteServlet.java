@@ -1,4 +1,4 @@
-package member.controller;
+﻿package member.controller;
 
 import java.io.IOException;
 
@@ -36,11 +36,13 @@ public class MemberDeleteServlet extends HttpServlet {
 		
 		//4. 받은 결과에 따라 뷰페이지 내보내기
 		String msg = "";
-		String loc = null;
+		String loc = request.getContextPath();
 		HttpSession session = request.getSession();
 		if(result>0) {
 			msg = "성공적으로 회원정보를 삭제했습니다.";
-			loc = request.getContextPath() + "/member/logout";//회원탈퇴인 경우, 로그아웃 처리함.
+			//세션무효화후 새로 생성
+			session.invalidate();
+			session = request.getSession();
 		}
 		else {
 			msg = "회원정보삭제에 실패했습니다.";
@@ -49,8 +51,8 @@ public class MemberDeleteServlet extends HttpServlet {
 		
 		session.setAttribute("msg", msg);
 //		request.setAttribute("loc", loc);
-		//아래 코드는 없어도 제대로 작동할 듯
-		response.sendRedirect(request.getContextPath());
+		
+		response.sendRedirect(loc);
 	}
 
 	/**
