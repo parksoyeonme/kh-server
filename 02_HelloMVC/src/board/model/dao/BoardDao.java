@@ -16,6 +16,7 @@ import java.util.Properties;
 import board.model.exception.BoardException;
 import board.model.vo.Board;
 import board.model.vo.BoardComment;
+import board.model.vo.BoardExt;
 
 
 public class BoardDao {
@@ -57,7 +58,8 @@ public class BoardDao {
 			rset = pstmt.executeQuery();
 			
 			while(rset.next()){
-				Board b = new Board();
+				//boardCommentCount필드를 사용하기 위해 BoardExt객체를 생성
+				BoardExt b = new BoardExt();
 				//컬럼명은 대소문자 구분이 없다.
 				b.setBoardNo(rset.getInt("board_no"));
 				b.setBoardTitle(rset.getString("board_title"));
@@ -67,6 +69,9 @@ public class BoardDao {
 				b.setBoardRenamedFileName(rset.getString("board_renamed_filename"));
 				b.setBoardDate(rset.getDate("board_date"));
 				b.setBoardReadCount(rset.getInt("board_read_count"));
+				//게시글별 댓글의 수를 VO객체 담기 : commentCnt필드추가
+				b.setBoardCommentCount(rset.getInt("board_comment_count"));
+				
 				list.add(b);
 			}
 			
@@ -270,7 +275,72 @@ public class BoardDao {
 			pstmt.setString(2, bc.getBoardCommentWriter());
 			pstmt.setString(3, bc.getBoardCommentContent());
 			pstmt.setInt(4, bc.getBoardRef());
-			pstmt.setObject(5, bc.getBoardCommentRef() != 0 ? bc.getBoardCommentRef() : null);// 댓글인 경우 0번 댓글을 참조
+			pstmt.setObject(5, bc.getBoardCommentRef() != 0 ? 
+									bc.getBoardCommentRef() : 
+										null);// 댓글인 경우 0번 댓글을 참조
+			
+			//쿼리문실행 : 완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
+			//DML은 executeUpdate()
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	
+	public List<BoardComment> selectCommentList(Connection conn, int board_no) {
+		List<BoardComment> list = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectCommentList");
+		
+		try{
+			//미완성쿼리문을 가지고 객체생성. 
+			pstmt = conn.prepareStatement(query);
+			
+			//시작 rownum과 마지막 rownum 구하는 공식
+			pstmt.setInt(1, board_no);
+			
+			//쿼리문실행
+			//완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()){
+				BoardComment bc = new BoardComment();
+				//컬럼명은 대소문자 구분이 없다.
+				bc.setBoardCommentNo(rset.getInt("board_comment_no"));
+				bc.setBoardCommentLevel(rset.getInt("board_comment_level"));
+				bc.setBoardCommentWriter(rset.getString("board_comment_writer"));
+				bc.setBoardCommentContent(rset.getString("board_comment_content"));
+				bc.setBoardRef(rset.getInt("board_ref"));
+				bc.setBoardCommentRef(rset.getInt("board_comment_ref"));//null인 참조댓글필드는 0값이 대입됨.
+				bc.setBoardCommentDate(rset.getDate("board_comment_date"));
+				list.add(bc);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+
+	public int deleteBoardComment(Connection conn, int boardCommentNo) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("deleteBoardComment"); 
+		//delete from board_comment where board_comment_no = ?
+		try {
+			//미완성쿼리문을 가지고 객체생성.
+			pstmt = conn.prepareStatement(query);
+			//쿼리문미완성
+			pstmt.setInt(1, boardCommentNo);
 			
 			//쿼리문실행 : 완성된 쿼리를 가지고 있는 pstmt실행(파라미터 없음)
 			//DML은 executeUpdate()

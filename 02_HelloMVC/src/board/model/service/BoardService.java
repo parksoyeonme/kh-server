@@ -91,6 +91,24 @@ public class BoardService {
 		close(conn);
 		return result;
 	}
+	
+	public List<BoardComment> selectCommentList(int board_no) {
+		Connection conn = getConnection();
+		List<BoardComment> list= boardDao.selectCommentList(conn, board_no);
+		close(conn);
+		return list;
+	}
+
+	public int deleteBoardComment(int boardCommentNo) {
+		Connection conn = getConnection();
+		int result = boardDao.deleteBoardComment(conn, boardCommentNo);
+		if(result>0)
+			commit(conn);
+		else 
+			rollback(conn);
+		close(conn);
+		return result;
+	}
 
 
 }

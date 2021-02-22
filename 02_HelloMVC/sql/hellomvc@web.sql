@@ -213,16 +213,17 @@ select *
 from board
 order by board_no desc;
 
---68번 게시글 댓글 
+--77번 게시글 댓글 
 select * from board_comment;
+--delete from board_comment where board_comment_no = 25;
 insert into board_comment
 values(
     seq_board_comment_no.nextval,
     default, --level
-    'admin', --작성자
+    'ezez', --작성자
     '수고하셨습니다.',
     77, --게시글 번호
-    null,
+    null, --대댓글만유효
     default --작성일
 );
 
@@ -230,8 +231,8 @@ insert into board_comment
 values(
     seq_board_comment_no.nextval,
     default, --level
-    'abcd', --작성자
-    '좋은 하루 보내세요~',
+    'oioi', --작성자
+    '오늘도 수고하셨습니다.',
     77, --게시글 번호
     null,
     default --작성일
@@ -241,7 +242,7 @@ values(
     seq_board_comment_no.nextval,
     default, --level
     'honggd', --작성자
-    '불금은 빡세게~',
+    '불금빡세게간다.',
     77, --게시글 번호
     null,
     default --작성일
@@ -296,6 +297,8 @@ order siblings by board_comment_no;
 
 rollback;
 
+
+
 --계층형 쿼리
 --employee테이블 조직도를 조회
 --manager_id --> emp_id
@@ -309,8 +312,19 @@ where quit_yn ='N'
 start with job_code = 'J1'
 connect by manager_id = prior emp_id;
 
+--댓글 개수확인
+select * 
+from( 
+    select row_number() over(order by board_no desc) rnum,
+        b.*,
+        (select count(*)from board_comment where board_ref = b.board_no) board_comment_count
+    from board b
+    ) v 
+where rnum between 1 and 5;
 
-
+select count(*)
+from board_comment
+where board_ref = 77;
 commit;
 
 

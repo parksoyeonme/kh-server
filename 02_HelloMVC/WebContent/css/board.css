@@ -31,6 +31,9 @@ table#tbl-board-view td {
 	padding: 5px 0 5px 15px; 
 	text-align:left;
 }
+form[name=boardUpdateFrm] label {
+	font-size: 13.3333px;
+}
 
 div.comment-container #btn-insert{width:60px; height:50px; color:white; background:#3300ff; position:relative; top:-20px;}
 
@@ -48,9 +51,11 @@ table#tbl-comment tr.level2 {color:gray; font-size: 14px;}
 table#tbl-comment tr.level2 td:first-of-type{padding-left:100px;}
 table#tbl-comment tr.level2 sub.comment-writer {color:#8e8eff; font-size:14px}
 table#tbl-comment tr.level2 sub.comment-date {color:#ff9c8a; font-size:10px}
+
 /*답글관련*/
 table#tbl-comment textarea{margin: 4px 0 0 0;}
 table#tbl-comment button.btn-insert2{width:60px; height:23px; color:white; background:#3300ff; position:relative; top:-5px; left:10px;}
+
 /* 삭제버튼관련 */
 table#tbl-comment button.btn-delete{background:red; color:white; display:none;}
 table#tbl-comment tr:hover button.btn-delete{display:inline;}

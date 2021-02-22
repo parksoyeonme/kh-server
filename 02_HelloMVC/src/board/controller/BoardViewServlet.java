@@ -56,12 +56,12 @@ public class BoardViewServlet extends HttpServlet {
 			System.out.println("board@BoardViewServlet = " + board);
 			
 			//댓글목록 
-//			List<BoardComment> commentList = boardService.selectBoardCommentList(boardNo);
+			List<BoardComment> commentList = boardService.selectCommentList(boardNo);
 			
 			
 			//3. view단처리 : jsp forwarding
 			request.setAttribute("board", board);
-//			request.setAttribute("commentList", commentList);
+			request.setAttribute("commentList", commentList);
 			
 			request.getRequestDispatcher("/WEB-INF/views/board/boardView.jsp")
 				   .forward(request, response);

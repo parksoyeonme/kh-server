@@ -1,4 +1,5 @@
-﻿<%@page import="board.model.vo.Board"%>
+﻿<%@page import="board.model.vo.BoardExt"%>
+<%@page import="board.model.vo.Board"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -26,11 +27,15 @@
 			<th>첨부파일</th><%--첨부파일이 있는 경우(board_renamed_filename등이 null이 아닌 경우) /images/file.png 표시 width:16px --%>
 			<th>조회수</th>
 		</tr>
-		<% for(Board b : list){ %>
+		<% for(Board board : list){ 
+			BoardExt b = (BoardExt)board;
+		%>
 		<tr>
 			<td><%= b.getBoardNo() %></td>
 			<td>
-				<a href="<%= request.getContextPath()%>/board/boardView?boardNo=<%= b.getBoardNo()%>"><%= b.getBoardTitle() %></a>
+				<a href="<%= request.getContextPath()%>/board/boardView?boardNo=<%= b.getBoardNo()%>">
+				<%= b.getBoardTitle() + (b.getBoardCommentCount() > 0 ? "(" + b.getBoardCommentCount() + ")" : "")%>
+				</a>
 			</td>
 			<td><%= b.getBoardWriter() %></td>
 			<td><%= b.getBoardDate() %></td>

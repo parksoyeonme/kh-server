@@ -88,7 +88,9 @@ public class MemberLoginServlet extends HttpServlet {
 			
 			//4. redirection처리 : 요청 url을 변경
 			//주어진 주소(location)로 클라이언트에게 다시 요청하라는 응답
-			response.sendRedirect(request.getContextPath());
+			String location = request.getHeader("Referer");
+			System.out.println("location@MemberLoginServlet = " + location);
+			response.sendRedirect(location);
 			
 		}
 		//로그인 실패 : 아이디 존재X, 비번이 틀린 경우

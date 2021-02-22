@@ -1,12 +1,72 @@
+<%@page import="board.model.vo.BoardComment"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="board.model.vo.Board"%>
 <% 
 	Board board = (Board)request.getAttribute("board");
+	List<BoardComment> commentList = (List<BoardComment>)request.getAttribute("commentList");
 %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <script>
 $(function(){
+	/**
+	* 댓글 삭제 
+	*/
+	$(".btn-delete").click(function(){
+		if(confirm('해당 댓글을 정말 삭제하시겠습니까?')){
+			var boardCommentNo = $(this).val();
+			location.href = "<%= request.getContextPath() %>/board/boardCommentDelete?boardCommentNo=" + boardCommentNo +"&boardNo=<%= board.getBoardNo() %>"; 
+		}
+	});
+	
+	
+	
+	/**
+	* 대댓글(답글) 버튼을 누르면 해당 tr바로 하위에 새로운 tr태그를 생성해 폼을 제공한다.
+	*/
+	$(".btn-reply").one('click', function(){
+		<% if(memberLoggedIn == null) { %>
+			<%--로그인 하지 않은 경우 --%>
+			loginAlert();
+		<% } else { %>
+			<%--로그인한 경우 --%>
+			var $this = $(this);//현재 클릭한 .btn-reply
+			var html = '<tr>';
+			html += '<td style="display:none; text-align:left" colspan="2">'; 
+			html += '<form action="<%= request.getContextPath() %>/board/boardCommentInsert" method="POST">';
+			html += '<input type="hidden" name="boardRef" value="<%= board.getBoardNo() %>" />';
+			html += '<input type="hidden" name="boardCommentWriter" value="<%= memberLoggedIn != null ? memberLoggedIn.getMemberId() : "" %>" />';
+			html += '<input type="hidden" name="boardCommentLevel" value="2" />';
+			html += '<input type="hidden" name="boardCommentRef" value="' + $this.val() + '" />';
+			html += '<textarea name="boardCommentContent" cols="60" rows="2"></textarea>';
+			html += '<button type="submit" class="btn-insert2">등록</button>';
+			html += '</form>';
+	        html += '</td>';
+	        html += '</tr>';
+	        
+	        //기준 tr
+	        var $trFromBtnReply = $this.parent().parent();
+	        console.log(html);
+	        //추가할 요소 기준
+	        $(html).insertAfter($trFromBtnReply)
+	        	   .find("td")
+				   .slideDown(800)
+				   .find("form")
+				   .submit(function(e){
+					   var $textarea = $(e.target).children('textarea');
+					   if(/^(.|\n){1,}$/.test($textarea.val()) == false){
+							alert("댓글 내용을 작성해주세요.");
+							$textarea.focus();
+							e.preventDefault();
+						}
+					   
+				   });
+			
+		<% } %>
+	});
+	
+	
 	/**
 	* 로그인 하지 않고 댓글을 작성할 수 없다.
 	*/
@@ -132,29 +192,59 @@ function fileDownload(oName, rName){
 		<!--table#tbl-comment-->
 		
 		<table id="tbl-comment">
-			<%-- 댓글인 경우 tr.level1 --%>
-		  	<tr class=level1>
-				<td>
-					<sub class=comment-writer></sub>
-					<sub class=comment-date></sub>
-				<br />
-					<%-- 댓글내용 --%>
-				</td>
-				<td>
-					<button class="btn-reply" value="댓글번호">답글</button>
-				</td>
-			</tr>
-			<%-- 대댓글인 경우 tr.level2 --%>
-			<tr class=level2>
-				<td>
-					<sub class=comment-writer></sub>
-					<sub class=comment-date></sub>
-				<br />
-					<%-- 대댓글 내용 --%>
-				</td>
-				<td></td>
-			</tr>
+		<%
+	    if(commentList != null){
+	        for(BoardComment bc : commentList){
+	            if(bc.getBoardCommentLevel()==1){
+	    %>
+	                <tr class=level1>
+	                    <td>
+	                        <sub class=comment-writer><%=bc.getBoardCommentWriter() %></sub>
+	                        <sub class=comment-date><%=bc.getBoardCommentDate()%></sub>
+	                    	<br />
+	                        <%=bc.getBoardCommentContent() %>
+	                    </td>
+	                    <td>
+	                        <button class="btn-reply" value="<%=bc.getBoardCommentNo()%>">답글</button>
+	                        <% if(memberLoggedIn != null
+	                        	&&(bc.getBoardCommentWriter().equals(memberLoggedIn.getMemberId())
+	                        		|| MemberService.ADMIN_MEMBER_ROLE.equals(memberLoggedIn.getMemberRole()))
+	                        		){ %>
+	                        <%--댓글 작성자와 관리자권한이 있는 경우만 노출 --%>
+	                        <button class="btn-delete" value="<%= bc.getBoardCommentNo() %>">삭제</button>
+	                        <% }%>
+	                    </td>
+	                </tr>
+	                
+	                
+	    <% 		} 
+	            else { %>
+	                <tr class=level2>
+	                    <td>
+	                        <sub class=comment-writer><%=bc.getBoardCommentWriter() %></sub>
+	                        <sub class=comment-date><%=bc.getBoardCommentDate()%></sub>
+	                    	<br />
+	                        <%=bc.getBoardCommentContent() %>
+	                    </td>
+	                    <td>
+	                        <% if(memberLoggedIn != null
+	                        	&&(bc.getBoardCommentWriter().equals(memberLoggedIn.getMemberId())
+	                        		|| MemberService.ADMIN_MEMBER_ROLE.equals(memberLoggedIn.getMemberRole()))
+	                        		){ %>
+	                        <%--댓글 작성자와 관리자권한이 있는 경우만 노출 --%>
+	                        <button class="btn-delete" value="<%= bc.getBoardCommentNo() %>">삭제</button>
+	                        <% }%>
+	                    </td>
+	                </tr>
+	
+	    <%
+	            }
+	
+	        }	
+	    } 
+	    %>
 		</table>
+				
 	</div>
 	
 	
