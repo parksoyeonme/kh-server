@@ -21,7 +21,7 @@ import board.model.vo.BoardComment;
 public class BoardViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BoardService boardService = new BoardService();
-	
+	//게시글조회 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

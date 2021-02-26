@@ -298,6 +298,10 @@ public class BoardDao {
 		ResultSet rset = null;
 		
 		String query = prop.getProperty("selectCommentList");
+		//select * from board_comment where board_ref = ? 
+		//start with board_comment_level=1 
+		//connect by prior board_comment_no=board_comment_ref 
+		//order siblings by board_comment_date
 		
 		try{
 			//미완성쿼리문을 가지고 객체생성. 

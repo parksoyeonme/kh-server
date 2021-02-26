@@ -199,6 +199,8 @@ comment on column board_comment.board_ref is '참조원글번호';
 comment on column board_comment.board_comment_ref is '게시판댓글 참조번호';
 comment on column board_comment.board_comment_date is '게시판댓글 작성일';
 
+
+--========================================
 --시퀀스 생성
 create sequence seq_board_comment_no
 start with 1

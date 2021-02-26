@@ -22,9 +22,9 @@ public class BoardCommentInsertServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1.파라미터 처리
-		int boardRef = Integer.parseInt(request.getParameter("boardRef"));
-		int boardCommentLevel = Integer.parseInt(request.getParameter("boardCommentLevel"));
-		int boardCommentRef = Integer.parseInt(request.getParameter("boardCommentRef"));
+		int boardRef = Integer.parseInt(request.getParameter("boardRef")); //참조원글
+		int boardCommentLevel = Integer.parseInt(request.getParameter("boardCommentLevel")); // 1,2
+		int boardCommentRef = Integer.parseInt(request.getParameter("boardCommentRef")); //게시판댓글참조번호
 		String boardCommentWriter = request.getParameter("boardCommentWriter");
 		String boardCommentContent = request.getParameter("boardCommentContent");
 		
