@@ -84,7 +84,7 @@ public class BoardEnrollServlet extends HttpServlet {
 		int result = boardService.insertBoard(board);
 		System.out.println("board-after@servlet = " + board);
 		
-		
+
 		String msg = result > 0 ? "게시글 등록 성공!" : "게시글 등록 실패!"; 
 		//board.getBoardNo()를 통해서 새로 등록된 게시글 번호 가져오기
 		String location = result > 0 ?
