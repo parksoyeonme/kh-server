@@ -35,7 +35,7 @@ public class AjaxCsvServlet extends HttpServlet {
 			//회원간 구분자 추가
 			sb.append(i < list.size() - 1 ? "\n" : "");
 		}
-		System.out.println("scv = " + sb);
+		System.out.println("csv = " + sb);
 		
 		response.setContentType("text/csv; charset=utf-8");
 		response.getWriter()

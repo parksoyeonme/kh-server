@@ -28,6 +28,7 @@ $(function(){
 			success : function(data){
 				//data매개변수에는 응답결과가 담겨 있다.
 				//alert(data);
+				//$("#result").html(data); // data를 html방식으로 보내주세요
 				$("#result").text(data); //보내는타입에따라 보여지는게 달라짐
 			},
 			error : function(xhr, textStatus, err){ //xhr -> XMLHttpRequest
@@ -35,7 +36,7 @@ $(function(){
 				console.log(xhr, textStatus, err);
 			},
 			complete : function(){
-				//요청성공/실패와 상관없이 마지막에 호출
+				//요청성공/실패와 상관없이 마지막에 호출 : try~catch의 finally와 같음
 				console.log('complete');
 			}
 		});
