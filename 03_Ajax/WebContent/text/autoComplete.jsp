@@ -65,7 +65,7 @@
 		minLength : 1,
 		delay : 500,
 		focus : function(e, focus){
-			//포커스를 가져도 선택되지 않도록함.
+			//포커스를 가져도 선택되지 않도록함. label 무엇 value 무엇 이런식으로 넘어온다.
 			return false;
 		}
 	});
