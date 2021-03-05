@@ -67,7 +67,7 @@ public class MvcUtils {
 	public static String getPageBar(int totalContents, int cpage, int numPerPage, String url) {
 		String pageBar = "";
 		
-		int pageBarSize = 5;
+		int pageBarSize = 3;
 		int totalPage = (int)Math.ceil((double)totalContents / numPerPage);
 
 		// /mvc/admin/memberList?cpage=

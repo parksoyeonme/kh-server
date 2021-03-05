@@ -327,9 +327,9 @@ where rnum between 1 and 5;
 select count(*)
 from board_comment
 where board_ref = 77;
-commit;
+--commit;
 
-
+SELECT * FROM BOARD;
 
 
 
