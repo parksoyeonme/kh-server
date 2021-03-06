@@ -139,7 +139,7 @@ NOCACHE;
     
 select * from board
 order by board_no desc;
-commit;
+--commit;
 
 
 --select * 
@@ -330,6 +330,7 @@ where board_ref = 77;
 --commit;
 
 SELECT * FROM BOARD;
+
 
 
 

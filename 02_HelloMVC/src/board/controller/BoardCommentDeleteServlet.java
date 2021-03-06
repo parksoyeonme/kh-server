@@ -18,9 +18,7 @@ public class BoardCommentDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BoardService boardService = new BoardService();
 	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. 사용자입력값
 		int boardCommentNo = Integer.parseInt(request.getParameter("boardCommentNo"));

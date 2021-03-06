@@ -185,6 +185,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String sql = prop.getProperty("selectLastBoardNo");
+		//select seq_board_no.currval from dual
 		int boardNo = 0;
 		try {
 			pstmt = conn.prepareStatement(sql);
