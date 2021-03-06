@@ -28,6 +28,7 @@ function passwordValidate(){
 			name="updatePwdFrm" 
 			action="<%=request.getContextPath()%>/member/updatePassword" 
 			method="post" >
+			
 			<table>
 				<tr>
 					<th>현재 비밀번호</th>
