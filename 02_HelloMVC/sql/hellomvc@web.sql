@@ -331,6 +331,8 @@ where board_ref = 77;
 
 SELECT * FROM BOARD;
 
+select * from hashtag_board where board_no = '1';
+select * from hashtag_board;
 
 
 
