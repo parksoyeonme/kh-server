@@ -71,6 +71,7 @@ function confirmMemberId(){
 		</form>
 	<% } %>
 	</div>
+	
 </body>
 </html>
 
