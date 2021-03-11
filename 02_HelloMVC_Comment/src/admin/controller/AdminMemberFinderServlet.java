@@ -39,6 +39,7 @@ public class AdminMemberFinderServlet extends HttpServlet {
 			//기본값 1
 		}
 		
+		
 		//사용자 입력값을 Map으로 처리
 		Map<String, Object> param = new HashMap<>();
 		param.put("searchType", searchType);
