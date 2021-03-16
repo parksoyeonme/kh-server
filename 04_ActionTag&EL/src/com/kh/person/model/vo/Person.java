@@ -1,5 +1,5 @@
 package com.kh.person.model.vo;
-  
+
 /*
  * bean 객체
  * 	- container(WAS=tomcate을 의미)가 관리하는 자바객체

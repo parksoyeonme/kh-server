@@ -39,7 +39,6 @@
 		getServletConfig():ServletConfig
 		getServletContext():ServletContext
 	
-	
  --%>
 <!DOCTYPE html>
 <html>

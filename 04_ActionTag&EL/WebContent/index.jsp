@@ -14,10 +14,12 @@
 		<li><a href="<%= request.getContextPath() %>/standard/person.do?name=세종&gender=남&age=67&married=false">jsp:useBean</a></li>
 		<li><a href="<%= request.getContextPath() %>/standard/include.jsp">jsp:include</a></li>
 	</ul>
-	<h3>JSTL-Custom Action Tag</h3>
+	<h3>JSTL - Custom Action Tag</h3>
 	<ul>
-		<li>
-			<a href="${pageContext.request.contextPath}/jstl/coreBasic.jsp?no1=370&no2=98">core - basic</a></li>
+		<li><a href="${pageContext.request.contextPath}/jstl/coreBasic.jsp?no1=370&no2=98">core - basic</a></li>
+		<li><a href="${pageContext.request.contextPath}/jstl/forEach.do">core - forEach</a></li>
+		<li><a href="${pageContext.request.contextPath}/jstl/format.jsp">format</a></li>
+		<li><a href="${pageContext.request.contextPath}/jstl/function.jsp">function</a></li>
 	</ul>
 
 	<h2>EL</h2>

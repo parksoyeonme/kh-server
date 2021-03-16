@@ -81,5 +81,6 @@
 		<li>${empty list}</li>
 		<li>${not empty list}</li>
 	</ul>
+	
 </body>
 </html>
